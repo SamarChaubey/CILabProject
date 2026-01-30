@@ -1,7 +1,13 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven3'
+        jdk 'JDK17'
+    }
+
     stages {
+
         stage('Prepare') {
             steps {
                 echo "Branch: ${env.BRANCH_NAME}"
@@ -13,14 +19,12 @@ pipeline {
                 branch 'main'
             }
             steps {
-                echo 'Building with Maven'
                 bat 'mvn clean compile'
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running tests'
                 bat 'mvn test'
             }
         }
@@ -30,7 +34,7 @@ pipeline {
                 expression { env.BRANCH_NAME.startsWith('release') }
             }
             steps {
-                echo 'Running security scan (placeholder)'
+                echo 'Security scan placeholder'
             }
         }
     }
